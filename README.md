@@ -1,7 +1,8 @@
+##Note - Work in progress
+Kaspar: This is a fork of https://github.com/dhotson/bert-php I am trying to make it composer compatible and eleminate the fdopen dependency.  
+
 BERT
 ====
-##Note
-Kaspar: This is a fork of https://github.com/dhotson/bert-php I am trying to make it composer compatible and get free it of the fdopen depency.
 
 A BERT (Binary ERlang Term) serialization library for PHP based on
 [Tom Preston-Werner's Ruby implementation](http://github.com/mojombo/bert).
