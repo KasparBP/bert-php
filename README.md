@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/TriKaspar/bert-php.png?branch=master)](https://travis-ci.org/TriKaspar/bert-php)[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/TriKaspar/bert-php/badges/quality-score.png?s=1959fe255ad985188e9a7535c18167a455eadc0e)](https://scrutinizer-ci.com/g/TriKaspar/bert-php/)
+
 ##Note - Work in progress
 Kaspar: This is a fork of https://github.com/dhotson/bert-php I am trying to make it composer compatible and eleminate the fdopen dependency.  
 
