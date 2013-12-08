@@ -2,7 +2,8 @@
 
 namespace Bert\Ernie;
 
-class Module {
+class Module
+{
     private $_name;
     private $_funs = array();
 

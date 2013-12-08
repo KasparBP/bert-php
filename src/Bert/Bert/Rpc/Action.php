@@ -1,8 +1,8 @@
 <?php
 namespace Bert\Bert\Rpc;
 
+use Bert\Bert\Bert;
 use Bert\Bert\Rpc\Action\Encodes;
-use Bert\Bert;
 use Bert\Bert\Rpc\Error\ConnectionError;
 use Bert\Bert\Rpc\Error\ProtocolError;
 use Bert\Bert\Rpc\Error\ReadError;
@@ -111,7 +111,8 @@ class Action
         if (!$lenheader)
             throw new ProtocolError(ProtocolError::$NO_HEADER);
 
-        $len = array_shift(unpack('N', $lenheader));
+        $unpacked = unpack('N', $lenheader);
+        $len = array_shift($unpacked);
         $bertResponse = $this->_read($sock, $len, $this->_svc->timeout);
 
         if (!$bertResponse)
