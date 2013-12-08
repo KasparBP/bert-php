@@ -5,14 +5,14 @@ use Bert\Bert\Rpc\Error;
 
 class ReadError extends Error
 {
-	public $host;
-	public $port;
+    public $host;
+    public $port;
 
-	public function __construct($host, $port)
-	{
-		$this->host = $host;
-		$this->port = $port;
+    public function __construct($host, $port)
+    {
+        $this->host = $host;
+        $this->port = $port;
 
-		parent::__construct("Unable to read from $host:$port");
-	}
+        parent::__construct("Unable to read from $host:$port");
+    }
 }

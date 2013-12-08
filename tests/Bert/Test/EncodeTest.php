@@ -47,7 +47,7 @@ class EncodeTest extends \PHPUnit_Framework_TestCase
     public function testEncodeFloat()
     {
         $this->assertEquals(
-            pack('c*', 131, 99)."1.125000000000000e+0",
+            pack('c*', 131, 99) . "1.125000000000000e+0",
             Encode::encode(1.125)
         );
     }
@@ -55,7 +55,7 @@ class EncodeTest extends \PHPUnit_Framework_TestCase
     public function testEncodeAtom()
     {
         $this->assertEquals(
-            pack('c*', 131, 100, 0, 4)."test",
+            pack('c*', 131, 100, 0, 4) . "test",
             Encode::encode(new Atom('test'))
         );
     }
@@ -64,7 +64,7 @@ class EncodeTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             pack('c*', 131, 104, 3, 97, 10, 97, 20, 97, 30),
-            Encode::encode(new Tuple(array(10,20,30)))
+            Encode::encode(new Tuple(array(10, 20, 30)))
         );
     }
 
@@ -82,7 +82,7 @@ class EncodeTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             pack('c*', 131, 108, 0, 0, 0, 3, 97, 41, 97, 42, 97, 43, 106),
-            Encode::encode(array(41,42,43))
+            Encode::encode(array(41, 42, 43))
         );
     }
 
@@ -105,7 +105,7 @@ class EncodeTest extends \PHPUnit_Framework_TestCase
     public function testEncodeBinary()
     {
         $this->assertEquals(
-            pack('c*', 131, 109, 0, 0, 0, 13)."hello world\x00\xFF",
+            pack('c*', 131, 109, 0, 0, 0, 13) . "hello world\x00\xFF",
             Encode::encode("hello world\x00\xFF")
         );
     }

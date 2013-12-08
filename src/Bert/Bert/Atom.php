@@ -3,20 +3,35 @@ namespace Bert\Bert;
 
 class Atom
 {
-	public static function bert() { return new Atom('bert'); }
-	public static function true() { return new Atom('true'); }
-	public static function false() { return new Atom('false'); }
-	public static function nil() { return new Atom('nil'); }
+    public static function bert()
+    {
+        return new Atom('bert');
+    }
 
-	private $_name;
+    public static function true()
+    {
+        return new Atom('true');
+    }
 
-	public function __construct($name)
-	{
-		$this->_name = $name;
-	}
+    public static function false()
+    {
+        return new Atom('false');
+    }
 
-	public function __toString()
-	{
-		return $this->_name;
-	}
+    public static function nil()
+    {
+        return new Atom('nil');
+    }
+
+    private $_name;
+
+    public function __construct($name)
+    {
+        $this->_name = $name;
+    }
+
+    public function __toString()
+    {
+        return $this->_name;
+    }
 }

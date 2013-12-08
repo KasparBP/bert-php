@@ -35,20 +35,20 @@ class DecodeTest extends \PHPUnit_Framework_TestCase
     public function testDecodeFloat()
     {
         $this->assertEquals(1.125,
-            Decode::decode(pack('c*', 131, 99)."1.125000000000000e+0")
+            Decode::decode(pack('c*', 131, 99) . "1.125000000000000e+0")
         );
     }
 
     public function testDecodeAtom()
     {
         $this->assertEquals(new Atom('test'),
-            Decode::decode(pack('c*', 131, 100, 0, 4)."test")
+            Decode::decode(pack('c*', 131, 100, 0, 4) . "test")
         );
     }
 
     public function testDecodeSmallTuple()
     {
-        $this->assertEquals(new Tuple(array(10,20,30)),
+        $this->assertEquals(new Tuple(array(10, 20, 30)),
             Decode::decode(pack('c*', 131, 104, 3, 97, 10, 97, 20, 97, 30))
         );
     }
@@ -63,7 +63,7 @@ class DecodeTest extends \PHPUnit_Framework_TestCase
 
     public function testDecodeList()
     {
-        $this->assertEquals(array(41,42,43),
+        $this->assertEquals(array(41, 42, 43),
             Decode::decode(pack('c*', 131, 108, 0, 0, 0, 3, 97, 41, 97, 42, 97, 43, 106))
         );
     }
@@ -85,7 +85,7 @@ class DecodeTest extends \PHPUnit_Framework_TestCase
     public function testDecodeBinary()
     {
         $this->assertEquals("hello world\x00\xFF",
-            Decode::decode(pack('c*', 131, 109, 0, 0, 0, 13)."hello world\x00\xFF")
+            Decode::decode(pack('c*', 131, 109, 0, 0, 0, 13) . "hello world\x00\xFF")
         );
     }
 }

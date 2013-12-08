@@ -3,6 +3,7 @@ namespace Bert\Test;
 
 use Bert\Bert\Bert;
 use Bert\Bert\Encoder;
+use Bert\Bert\Regex;
 use Bert\Bert\Time;
 
 class EncoderTest extends \PHPUnit_Framework_TestCase
@@ -45,7 +46,7 @@ class EncoderTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             Bert::t(Bert::a('bert'), Bert::a('regex'), '.*?', array(Bert::a('caseless'))),
-            Encoder::convert(new Bert_Regex('.*?', array('caseless')))
+            Encoder::convert(new Regex('.*?', array('caseless')))
         );
     }
 
