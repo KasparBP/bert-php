@@ -1,6 +1,6 @@
 <?php
 namespace Bert\Bert\Rpc\Action;
 
-class Bert_Rpc_Action_ProxyError extends Bert_Rpc_Action_RpcError
+class ProxyError extends RpcError
 {
 }

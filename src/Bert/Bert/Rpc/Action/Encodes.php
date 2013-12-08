@@ -1,9 +1,9 @@
 <?php
 namespace Bert\Bert\Rpc\Action;
 
-use Bert\Bert;
+use Bert\Bert\Bert;
 
-class Bert_Rpc_Action_Encodes
+class Encodes
 {
 	public static function encodeRequest($request)
 	{
@@ -33,28 +33,28 @@ class Bert_Rpc_Action_Encodes
 		switch ($level)
 		{
 			case 'protocol':
-				throw new Bert_Rpc_Action_ProtocolError(
+				throw new ProtocolError(
 					$code,
 					$message,
 					$class,
 					$backtrace
 				);
 			case 'server':
-				throw new Bert_Rpc_Action_ServerError(
+				throw new ServerError(
 					$code,
 					$message,
 					$class,
 					$backtrace
 				);
 			case 'user':
-				throw new Bert_Rpc_Action_UserError(
+				throw new UserError(
 					$code,
 					$message,
 					$class,
 					$backtrace
 				);
 			case 'proxy':
-				throw new Bert_Rpc_Action_ProxyError(
+				throw new ProxyError(
 					$code,
 					$message,
 					$class,

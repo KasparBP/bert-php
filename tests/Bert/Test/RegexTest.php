@@ -1,42 +1,46 @@
 <?php
 namespace Bert\Test;
 
-use Bert\Bert\Bert_Regex;
+use Bert\Bert\Regex;
 
-class RegexTest extends UnitTestCase
+class RegexTest extends \PHPUnit_Framework_TestCase
 {
-	public function testBasic()
-	{
-		$this->assertEqual(
-			Bert_Regex::fromString('/hello.*/im'),
-			new Bert_Regex('hello.*', array('caseless', 'multiline'))
-		);
-	}
+    public function testBasic()
+    {
+        $this->assertEquals(
+            new Regex('hello.*', array('caseless', 'multiline')),
+            Regex::fromString('/hello.*/im')
+        );
+    }
 
-	public function testEscapeSource()
-	{
-		$r = Bert_Regex::fromString('/hel\/lo/');
+    public function testEscapeSource()
+    {
+        $r = Regex::fromString('/hel\/lo/');
 
-		$this->assertEqual(
-			$r->source,
-			'hel/lo'
-		);
+        $this->assertEquals(
+            'hel/lo',
+            $r->source
+        );
 
-		$this->assertEqual(
-			"$r",
-			'/hel\/lo/'
-		);
-	}
+        $this->assertEquals(
+            '/hel\/lo/',
+            "$r"
+        );
+    }
 
-	public function testDodgyRegex()
-	{
-		$this->expectException('Exception');
-		Bert_Regex::fromString('missing slashes');
-	}
+    /**
+     * @expectedException \Exception
+     */
+    public function testDodgyRegex()
+    {
+        Regex::fromString('missing slashes');
+    }
 
-	public function testDodgyOptions()
-	{
-		$this->expectException('Exception');
-		Bert_Regex::fromString('/hello/xyz');
-	}
+    /**
+     * @expectedException \Exception
+     */
+    public function testDodgyOptions()
+    {
+        Regex::fromString('/hello/xyz');
+    }
 }

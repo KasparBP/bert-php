@@ -1,7 +1,7 @@
 <?php
 namespace Bert\Bert;
 
-class Bert_Encode
+class Encode
 {
 	private $_out;
 
@@ -21,13 +21,13 @@ class Bert_Encode
 
 	public function writeAny($obj)
 	{
-		$this->write1(Bert_Types::MAGIC);
+		$this->write1(Types::MAGIC);
 		$this->writeAnyRaw($obj);
 	}
 
 	public function writeAnyRaw($obj)
 	{
-		if ($obj instanceof Bert_Atom)
+		if ($obj instanceof Atom)
 			return $this->writeSymbol($obj);
 		elseif (is_integer($obj))
 			return $this->writeInteger($obj);
@@ -35,7 +35,7 @@ class Bert_Encode
 			return $this->writeBignum($obj);
 		elseif (is_float($obj))
 			return $this->writeFloat($obj);
-		elseif ($obj instanceof Bert_Tuple)
+		elseif ($obj instanceof Tuple)
 			return $this->writeTuple($obj);
 		elseif (is_array($obj))
 			return $this->writeList($obj);
@@ -68,8 +68,8 @@ class Bert_Encode
 	public function writeBoolean($bool)
 	{
 		$val = ($bool === true)
-			? Bert_Atom::true()
-			: Bert_Atom::false();
+			? Atom::true()
+			: Atom::false();
 
 		$this->writeSymbol($val);
 	}
@@ -77,7 +77,7 @@ class Bert_Encode
 	public function writeSymbol($str)
 	{
 		$data = "$str";
-		$this->write1(Bert_Types::ATOM);
+		$this->write1(Types::ATOM);
 		$this->write2(strlen($data));
 		$this->writeString($data);
 	}
@@ -86,12 +86,12 @@ class Bert_Encode
 	{
 		if ($num >= 0 && $num < 256)
 		{
-			$this->write1(Bert_Types::SMALL_INT);
+			$this->write1(Types::SMALL_INT);
 			$this->write1($num);
 		}
-		elseif ($num <= Bert_Types::MAX_INT && $num >= Bert_Types::MIN_INT)
+		elseif ($num <= Types::MAX_INT && $num >= Types::MIN_INT)
 		{
-			$this->write1(Bert_Types::INT);
+			$this->write1(Types::INT);
 			$this->write4($num);
 		}
 		else
@@ -102,7 +102,7 @@ class Bert_Encode
 
 	public function writeFloat($float)
 	{
-		$this->write1(Bert_Types::FLOAT);
+		$this->write1(Types::FLOAT);
 		$this->writeString(sprintf('%15.15e', $float));
 	}
 
@@ -124,7 +124,7 @@ class Bert_Encode
 
 		if (count($values) < 256)
 		{
-			$this->write1(Bert_Types::SMALL_BIGNUM);
+			$this->write1(Types::SMALL_BIGNUM);
 			$this->write1(count($values));
 			$this->write1($negative ? 1 : 0);
 			foreach ($values as $v)
@@ -132,7 +132,7 @@ class Bert_Encode
 		}
 		else
 		{
-			$this->write1(Bert_Types::LARGE_BIGNUM);
+			$this->write1(Types::LARGE_BIGNUM);
 			$this->write4(count($values));
 			$this->write1($negative ? 1 : 0);
 			foreach ($values as $v)
@@ -142,17 +142,17 @@ class Bert_Encode
 
 	public function writeTuple($data)
 	{
-		if (!is_array($data) && !($data instanceof Bert_Tuple))
+		if (!is_array($data) && !($data instanceof Tuple))
 			$this->_fail($data);
 
 		if (count($data) < 256)
 		{
-			$this->write1(Bert_Types::SMALL_TUPLE);
+			$this->write1(Types::SMALL_TUPLE);
 			$this->write1(count($data));
 		}
 		else
 		{
-			$this->write1(Bert_Types::LARGE_TUPLE);
+			$this->write1(Types::LARGE_TUPLE);
 			$this->write4(count($data));
 		}
 
@@ -168,9 +168,9 @@ class Bert_Encode
 			$this->_fail($data);
 
 		if (empty($data))
-			return $this->write1(Bert_Types::NIL);
+			return $this->write1(Types::NIL);
 
-		$this->write1(Bert_Types::LISTTYPE);
+		$this->write1(Types::LISTTYPE);
 		$this->write4(count($data));
 
 		foreach ($data as $val)
@@ -178,12 +178,12 @@ class Bert_Encode
 			$this->writeAnyRaw($val);
 		}
 
-		$this->write1(Bert_Types::NIL);
+		$this->write1(Types::NIL);
 	}
 
 	public function writeBinary($data)
 	{
-		$this->write1(Bert_Types::BIN);
+		$this->write1(Types::BIN);
 		$this->write4(strlen($data));
 		$this->writeString($data);
 	}

@@ -1,9 +1,9 @@
 <?php
 namespace Bert\Bert\Rpc;
 
-use Bert\Bert;
+use Bert\Bert\Bert;
 
-class Bert_Rpc_Service
+class Service
 {
 	public $host;
 	public $port;
@@ -19,13 +19,13 @@ class Bert_Rpc_Service
 	public function call($options = null)
 	{
 		$this->_verifyOptions($options);
-		return new Bert_Rpc_Request($this, Bert::a('call'), $options);
+		return new Request($this, Bert::a('call'), $options);
 	}
 
 	public function cast($options = null)
 	{
 		$this->_verifyOptions($options);
-		return new Bert_Rpc_Request($this, Bert::a('cast'), $options);
+		return new Request($this, Bert::a('cast'), $options);
 	}
 
 	// --

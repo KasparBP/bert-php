@@ -1,9 +1,9 @@
 <?php
 namespace Bert\Bert\Rpc;
 
-use Bert\Bert\Rpc\Error\Bert_Rpc_Error_RemoteError;
+use Bert\Bert\Rpc\Error\RemoteError;
 
-class Bert_Rpc_Error extends \Exception
+class Error extends \Exception
 {
 	private $_originalException;
 	private $_bt;
@@ -17,7 +17,7 @@ class Bert_Rpc_Error extends \Exception
 			list($code, $message) = array(0, $msg);
 
 		if (isset($class))
-			$this->_originalException = new Bert_Rpc_Error_RemoteError("$class: $message");
+			$this->_originalException = new RemoteError("$class: $message");
 		else
 			$this->_originalException = $this;
 

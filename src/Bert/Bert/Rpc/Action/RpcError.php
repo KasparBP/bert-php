@@ -1,7 +1,7 @@
 <?php
 namespace Bert\Bert\Rpc\Action;
 
-class Bert_Rpc_Action_RpcError extends \Exception
+class RpcError extends \Exception
 {
 	public function __construct($code, $msg = null, $class = null, $bt = array())
 	{

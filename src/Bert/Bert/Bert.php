@@ -1,21 +1,16 @@
 <?php
-namespace Bert;
-
-use Bert\Bert\Bert_Atom;
-use Bert\Bert\Bert_Decoder;
-use Bert\Bert\Bert_Encoder;
-use Bert\Bert\Bert_Tuple;
+namespace Bert\Bert;
 
 class Bert
 {
 	public static function encode($obj)
 	{
-		return Bert_Encoder::encode($obj);
+		return Encoder::encode($obj);
 	}
 
 	public static function decode($bert)
 	{
-		return Bert_Decoder::decode($bert);
+		return Decoder::decode($bert);
 	}
 
 	public static function ebin($str)
@@ -26,12 +21,12 @@ class Bert
 
 	public static function a($str)
 	{
-		return new Bert_Atom($str);
+		return new Atom($str);
 	}
 
 	public static function t()
 	{
-		return new Bert_Tuple(func_get_args());
+		return new Tuple(func_get_args());
 	}
 
 }

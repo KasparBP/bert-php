@@ -1,9 +1,9 @@
 <?php
 namespace Bert\Bert\Rpc\Error;
 
-use Bert\Bert\Rpc\Bert_Rpc_Error;
+use Bert\Bert\Rpc\Error;
 
-class Bert_Rpc_Error_ConnectionError extends Bert_Rpc_Error
+class ConnectionError extends Error
 {
 	public function __construct($host, $port, $message = '')
 	{

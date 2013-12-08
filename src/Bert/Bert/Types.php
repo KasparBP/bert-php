@@ -1,7 +1,7 @@
 <?php
 namespace Bert\Bert;
 
-class Bert_Types
+class Types
 {
 	const SMALL_INT = 97;
 	const INT = 98;

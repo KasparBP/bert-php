@@ -1,7 +1,7 @@
 <?php
 namespace Bert\Bert;
 
-class Bert_Encoder
+class Encoder
 {
 	/**
 	 * Encode a PHP object into a BERT.
@@ -11,7 +11,7 @@ class Bert_Encoder
 	public static function encode($obj)
 	{
 		$complexObj = self::convert($obj);
-		return Bert_Encode::encode($complexObj);
+		return Encode::encode($complexObj);
 	}
 
 	/**
@@ -33,61 +33,61 @@ class Bert_Encoder
 				);
 			}
 
-			return new Bert_Tuple(array(
-				Bert_Atom::bert(),
-				new Bert_Atom('dict'),
+			return new Tuple(array(
+				Atom::bert(),
+				new Atom('dict'),
 				$pairs,
 			));
 		}
-		elseif ($obj instanceof Bert_Tuple)
+		elseif ($obj instanceof Tuple)
 		{
-			return new Bert_Tuple(
+			return new Tuple(
 				array_map(
-					array('self', 'convert'),
+					array('Encoder', 'convert'),
 					iterator_to_array($obj)));
 		}
-		elseif ($obj instanceof Bert_Time)
+		elseif ($obj instanceof Time)
 		{
-			return new Bert_Tuple(array(
-				Bert_Atom::bert(),
-				new Bert_Atom('time'),
+			return new Tuple(array(
+				Atom::bert(),
+				new Atom('time'),
 				$obj->megaseconds,
 				$obj->seconds,
 				$obj->microseconds,
 			));
 		}
-		elseif ($obj instanceof Bert_Regex)
+		elseif ($obj instanceof Regex)
 		{
-			return new Bert_Tuple(array(
-				Bert_Atom::bert(),
-				new Bert_Atom('regex'),
+			return new Tuple(array(
+				Atom::bert(),
+				new Atom('regex'),
 				$obj->source,
 				array_map(array('Bert','a'), $obj->options) // atom-ise options
 			));
 		}
 		elseif (is_array($obj))
 		{
-			return array_map(array('self', 'convert'), $obj);
+			return array_map(array('Encoder', 'convert'), $obj);
 		}
 		elseif ($obj === null)
 		{
-			return new Bert_Tuple(array(
-				Bert_Atom::bert(),
-				Bert_Atom::nil(),
+			return new Tuple(array(
+				Atom::bert(),
+				Atom::nil(),
 			));
 		}
 		elseif ($obj === true)
 		{
-			return new Bert_Tuple(array(
-				Bert_Atom::bert(),
-				Bert_Atom::true(),
+			return new Tuple(array(
+				Atom::bert(),
+				Atom::true(),
 			));
 		}
 		elseif ($obj === false)
 		{
-			return new Bert_Tuple(array(
-				Bert_Atom::bert(),
-				Bert_Atom::false(),
+			return new Tuple(array(
+				Atom::bert(),
+				Atom::false(),
 			));
 		}
 		else

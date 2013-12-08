@@ -1,6 +1,6 @@
 <?php
 namespace Bert\Bert\Rpc\Error;
 
-class Bert_Rpc_Error_RemoteError extends \Exception
+class RemoteError extends \Exception
 {
 }

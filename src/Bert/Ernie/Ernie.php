@@ -1,8 +1,8 @@
 <?php
-namespace Bert;
+namespace Bert\Ernie;
 
-use Bert\Ernie\Error\Ernie_ServerError;
-use Bert\Ernie\Module;
+use Bert\Bert\Bert;
+use Bert\Ernie\Error\ServerError;
 
 class Ernie
 {
@@ -50,10 +50,10 @@ class Ernie
 	public static function dispatch($mod, $fun, $args)
 	{
 		if (null === ($mod = self::$_mods["$mod"]))
-			throw new Ernie_ServerError("No such module '$mod'");
+			throw new ServerError("No such module '$mod'");
 
 		if (null === ($callback = $mod->getFun($fun)))
-			throw new Ernie_ServerError("No such function '$mod:$fun'");
+			throw new ServerError("No such function '$mod:$fun'");
 
 		$callback = $mod->getFun($fun);
 
@@ -112,7 +112,7 @@ class Ernie
 					$response = Bert::t(Bert::a('reply'), $result);
 					self::writeBerp($output, $response);
 				}
-				catch (Ernie_ServerError $e)
+				catch (ServerError $e)
 				{
 					$response = Bert::t(
 						Bert::a('error'),

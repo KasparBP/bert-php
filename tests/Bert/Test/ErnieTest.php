@@ -1,60 +1,55 @@
 <?php
 namespace Bert\Test;
 
+use Bert\Ernie\Ernie;
+
 class MyClass
 {
-	public function a() { }
-	public function b() { }
+    public function a() { }
+    public function b() { }
 }
 
-class ErnieTest extends UnitTestCase
+class ErnieTest extends \PHPUnit_Framework_TestCase
 {
-	public function testMod()
-	{
-		Mock::generate('MyClass', 'MyMock');
-		$m = new MyMock();
-		Ernie::mod('test', array(
-			'a' => array($m, 'a'),
-			'b' => array($m, 'b'),
-		));
+    public function testMod()
+    {
+        $m = $this->getMock('MyClass');
+        Ernie::mod('test', array(
+            'a' => array($m, 'a'),
+            'b' => array($m, 'b'),
+        ));
+        $m->expects($this->once())->method('a');
+        $m->expects($this->once())->method('b');
+        Ernie::dispatch('test', 'a', array());
+        Ernie::dispatch('test', 'b', array());
+    }
 
-		$m->expectCallCount('a', 1);
-		$m->expectCallCount('b', 1);
+    public function testFun()
+    {
+        $m = $this->getMock('MyClass');
+        Ernie::mod('test', array(
+            'a' => array($m, 'a'),
+        ));
 
-		Ernie::dispatch('test', 'a', array());
-		Ernie::dispatch('test', 'b', array());
-	}
+        Ernie::fun('b', array($m, 'b'));
+        $m->expects($this->once())->method('a');
+        $m->expects($this->once())->method('b');
 
-	public function testFun()
-	{
-		Mock::generate('MyClass', 'MyMock');
-		$m = new MyMock();
-		Ernie::mod('test', array(
-			'a' => array($m, 'a'),
-		));
+        Ernie::dispatch('test', 'a', array());
+        Ernie::dispatch('test', 'b', array());
+    }
 
-		Ernie::fun('b', array($m, 'b'));
+    public function testExpose()
+    {
+        $m = $this->getMock('MyClass');
 
-		$m->expectCallCount('a', 1);
-		$m->expectCallCount('b', 1);
+        Ernie::expose('test', $m);
+        $m->expects($this->once())->method('a');
+        $m->expects($this->once())->method('b');
 
-		Ernie::dispatch('test', 'a', array());
-		Ernie::dispatch('test', 'b', array());
-	}
-
-	public function testExpose()
-	{
-		Mock::generate('MyClass', 'MyMock');
-		$m = new MyMock();
-
-		Ernie::expose('test', $m);
-
-		$m->expectCallCount('a', 1);
-		$m->expectCallCount('b', 1);
-
-		Ernie::dispatch('test', 'a', array());
-		Ernie::dispatch('test', 'b', array());
-	}
+        Ernie::dispatch('test', 'a', array());
+        Ernie::dispatch('test', 'b', array());
+    }
 
 
 }

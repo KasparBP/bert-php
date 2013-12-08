@@ -1,9 +1,9 @@
 <?php
 namespace Bert\Bert\Rpc;
 
-use Bert\Bert\Bert_Atom;
+use Bert\Bert\Atom;
 
-class Bert_Rpc_Module
+class Module
 {
 	private $_svc;
 	private $_req;
@@ -18,7 +18,7 @@ class Bert_Rpc_Module
 
 	public function __call($cmd, $args)
 	{
-		$action = new Bert_Rpc_Action($this->_svc, $this->_req, $this->_mod, new Bert_Atom($cmd), $args);
+		$action = new Action($this->_svc, $this->_req, $this->_mod, new Atom($cmd), $args);
 		return $action->execute();
 	}
 }

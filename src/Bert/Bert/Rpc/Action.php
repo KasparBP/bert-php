@@ -1,15 +1,15 @@
 <?php
 namespace Bert\Bert\Rpc;
 
-use Bert\Bert\Rpc\Action\Bert_Rpc_Action_Encodes;
+use Bert\Bert\Rpc\Action\Encodes;
 use Bert\Bert;
-use Bert\Bert\Rpc\Error\Bert_Rpc_Error_ConnectionError;
-use Bert\Bert\Rpc\Error\Bert_Rpc_Error_ProtocolError;
-use Bert\Bert\Rpc\Error\Bert_Rpc_Error_ReadError;
-use Bert\Bert\Rpc\Error\Bert_Rpc_Error_ReadTimeoutError;
+use Bert\Bert\Rpc\Error\ConnectionError;
+use Bert\Bert\Rpc\Error\ProtocolError;
+use Bert\Bert\Rpc\Error\ReadError;
+use Bert\Bert\Rpc\Error\ReadTimeoutError;
 use Exception;
 
-class Bert_Rpc_Action
+class Action
 {
 	private $_svc;
 	private $_req;
@@ -28,7 +28,7 @@ class Bert_Rpc_Action
 
 	public function execute()
 	{
-		$bertRequest = Bert_Rpc_Action_Encodes::encodeRequest(
+		$bertRequest = Encodes::encodeRequest(
 			Bert::t(
 				$this->_req->kind,
 				$this->_mod,
@@ -38,7 +38,7 @@ class Bert_Rpc_Action
 		);
 
 		$bertResponse = $this->_transaction($bertRequest);
-		return Bert_Rpc_Action_Encodes::decodeResponse($bertResponse);
+		return Encodes::decodeResponse($bertResponse);
 	}
 
 	// ---
@@ -64,14 +64,14 @@ class Bert_Rpc_Action
 			$n = socket_select($r, $w, $e, $timeout);
 			if ($n === false)
 			{
-				throw new Bert_Rpc_Error_ConnectionError(
+				throw new ConnectionError(
 					$this->_svc->host, $this->_svc->port,
 					socket_strerror(socket_last_error())
 				);
 			}
 			elseif ($n === 0)
 			{
-				throw new Bert_Rpc_Error_ReadTimeoutError(
+				throw new ReadTimeoutError(
 					$this->_svc->host,
 					$this->_svc->port,
 					$this->_svc->timeout
@@ -81,14 +81,14 @@ class Bert_Rpc_Action
 			$bytes = socket_recvfrom($sock, $msg, $len - $size, 0, $name, $port);
 			if ($bytes === false)
 			{
-				throw new Bert_Rpc_Error_ConnectionError(
+				throw new ConnectionError(
 					$this->_svc->host, $this->_svc->port,
 					socket_strerror(socket_last_error())
 				);
 			}
 			elseif ($bytes === 0)
 			{
-				throw new Bert_Rpc_Error_ReadError($this->_svc->host, $this->_svc->port);
+				throw new ReadError($this->_svc->host, $this->_svc->port);
 			}
 
 			$size += $bytes;
@@ -108,7 +108,7 @@ class Bert_Rpc_Action
 			&& $this->_req->options['cache'][0] == 'validation')
 		{
 			$token = $this->_req->options['cache'][1];
-			$infoBert = Bert_Rpc_Action_Encodes::encodeRequest(array('info', 'cache', array('validation', $token)));
+			$infoBert = Encodes::encodeRequest(array('info', 'cache', array('validation', $token)));
 			$this->_write($infoBert);
 		}
 
@@ -116,13 +116,13 @@ class Bert_Rpc_Action
 		$lenheader = $this->_read($sock, 4, $this->_svc->timeout);
 
 		if (!$lenheader)
-			throw new Bert_Rpc_Error_ProtocolError(Bert_Rpc_Error_ProtocolError::$NO_HEADER);
+			throw new ProtocolError(ProtocolError::$NO_HEADER);
 
 		$len = array_shift(unpack('N', $lenheader));
 		$bertResponse = $this->_read($sock, $len, $this->_svc->timeout);
 
 		if (!$bertResponse)
-			throw new Bert_Rpc_Error_ProtocolError(Bert_Rpc_Error_ProtocolError::$NO_DATA);
+			throw new ProtocolError(ProtocolError::$NO_DATA);
 
 		socket_close($sock);
 
@@ -146,7 +146,7 @@ class Bert_Rpc_Action
 			throw new Exception('Unable to set option on socket: '. socket_strerror(socket_last_error()));
 
 		if (false === socket_connect($sock, $host, $port))
-			throw new Bert_Rpc_Error_ConnectionError($host, $port, socket_strerror(socket_last_error()));
+			throw new ConnectionError($host, $port, socket_strerror(socket_last_error()));
 
 		return $sock;
 	}

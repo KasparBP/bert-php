@@ -1,12 +1,12 @@
 <?php
 namespace Bert\Bert;
 
-class Bert_Atom
+class Atom
 {
-	public static function bert() { return new Bert_Atom('bert'); }
-	public static function true() { return new Bert_Atom('true'); }
-	public static function false() { return new Bert_Atom('false'); }
-	public static function nil() { return new Bert_Atom('nil'); }
+	public static function bert() { return new Atom('bert'); }
+	public static function true() { return new Atom('true'); }
+	public static function false() { return new Atom('false'); }
+	public static function nil() { return new Atom('nil'); }
 
 	private $_name;
 

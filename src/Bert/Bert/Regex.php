@@ -1,7 +1,7 @@
 <?php
 namespace Bert\Bert;
 
-class Bert_Regex
+class Regex
 {
 	public $source;
 	public $options = array();
@@ -24,7 +24,7 @@ class Bert_Regex
 				if (strstr($matches[3], $o))
 					$options []= $name;
 
-			return new Bert_Regex($source, $options);
+			return new Regex($source, $options);
 		}
 
 		throw new \Exception('Invalid regex format');

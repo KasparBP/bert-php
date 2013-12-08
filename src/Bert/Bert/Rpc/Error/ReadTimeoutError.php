@@ -1,9 +1,9 @@
 <?php
 namespace Bert\Bert\Rpc\Error;
 
-use Bert\Bert\Rpc\Bert_Rpc_Error;
+use Bert\Bert\Rpc\Error;
 
-class Bert_Rpc_Error_ReadTimeoutError extends Bert_Rpc_Error
+class ReadTimeoutError extends Error
 {
 	public $host;
 	public $port;

@@ -3,7 +3,7 @@ namespace Bert\Bert;
 
 use Bert\Bert;
 
-class Bert_Decode
+class Decode
 {
 	private $_input;
 	private $_peeked = '';
@@ -24,7 +24,7 @@ class Bert_Decode
 
 	public function readAny()
 	{
-		if ($this->read1() !== Bert_Types::MAGIC)
+		if ($this->read1() !== Types::MAGIC)
 			$this->_fail('Bad Magic');
 
 		return $this->readAnyRaw();
@@ -35,18 +35,18 @@ class Bert_Decode
 		$val = $this->peek1();
 		switch ($val)
 		{
-			case Bert_Types::ATOM: return $this->readAtom();
-			case Bert_Types::SMALL_INT: return $this->readSmallInt();
-			case Bert_Types::INT: return $this->readInt();
-			case Bert_Types::SMALL_BIGNUM: return $this->readSmallBignum();
-			case Bert_Types::LARGE_BIGNUM: return $this->readLargeBignum();
-			case Bert_Types::FLOAT: return $this->readFloat();
-			case Bert_Types::SMALL_TUPLE: return $this->readSmallTuple();
-			case Bert_Types::LARGE_TUPLE: return $this->readLargeTuple();
-			case Bert_Types::NIL: return $this->readNil();
-			case Bert_Types::STRING: return $this->readErlString();
-			case Bert_Types::LISTTYPE: return $this->readList();
-			case Bert_Types::BIN: return $this->readBin();
+			case Types::ATOM: return $this->readAtom();
+			case Types::SMALL_INT: return $this->readSmallInt();
+			case Types::INT: return $this->readInt();
+			case Types::SMALL_BIGNUM: return $this->readSmallBignum();
+			case Types::LARGE_BIGNUM: return $this->readLargeBignum();
+			case Types::FLOAT: return $this->readFloat();
+			case Types::SMALL_TUPLE: return $this->readSmallTuple();
+			case Types::LARGE_TUPLE: return $this->readLargeTuple();
+			case Types::NIL: return $this->readNil();
+			case Types::STRING: return $this->readErlString();
+			case Types::LISTTYPE: return $this->readList();
+			case Types::BIN: return $this->readBin();
 			default:
 				$this->_fail('Unknown term tag: "'.$this->peek1().'"');
 		}
@@ -126,18 +126,18 @@ class Bert_Decode
 
 	public function readAtom()
 	{
-		if ($this->read1() !== Bert_Types::ATOM)
+		if ($this->read1() !== Types::ATOM)
 			$this->_fail('Invalid Type, not an atom');
 
 		$length = $this->read2();
 		$str = $this->readString($length);
 
-		return new Bert_Atom($str);
+		return new Atom($str);
 	}
 
 	public function readSmallInt()
 	{
-		if ($this->read1() !== Bert_Types::SMALL_INT)
+		if ($this->read1() !== Types::SMALL_INT)
 			$this->_fail('Invalid Type, not a small int');
 
 		return $this->read1();
@@ -145,7 +145,7 @@ class Bert_Decode
 
 	public function readInt()
 	{
-		if ($this->read1() !== Bert_Types::INT)
+		if ($this->read1() !== Types::INT)
 			$this->_fail('Invalid Type, not a small int');
 
 		$value = $this->read4();
@@ -159,7 +159,7 @@ class Bert_Decode
 
 	public function readSmallBignum()
 	{
-		if ($this->read1() !== Bert_Types::SMALL_BIGNUM)
+		if ($this->read1() !== Types::SMALL_BIGNUM)
 			$this->_fail('Invalid Type, not a small bignum');
 
 		$count = $this->read1();
@@ -180,7 +180,7 @@ class Bert_Decode
 
 	public function readLargeBignum()
 	{
-		if ($this->read1() !== Bert_Types::LARGE_BIGNUM)
+		if ($this->read1() !== Types::LARGE_BIGNUM)
 			$this->_fail('Invalid Type, not a large bignum');
 
 		$count = $this->read4();
@@ -201,7 +201,7 @@ class Bert_Decode
 
 	public function readFloat()
 	{
-		if ($this->read1() !== Bert_Types::FLOAT)
+		if ($this->read1() !== Types::FLOAT)
 			$this->_fail('Invalid Type, not a float');
 
 		$str = $this->readString(31);
@@ -210,7 +210,7 @@ class Bert_Decode
 
 	public function readSmallTuple()
 	{
-		if ($this->read1() !== Bert_Types::SMALL_TUPLE)
+		if ($this->read1() !== Types::SMALL_TUPLE)
 			$this->_fail('Invalid Type, not a small tuple');
 
 		return $this->readTuple($this->read1());
@@ -218,7 +218,7 @@ class Bert_Decode
 
 	public function readLargeTuple()
 	{
-		if ($this->read1() !== Bert_Types::LARGE_TUPLE)
+		if ($this->read1() !== Types::LARGE_TUPLE)
 			$this->_fail('Invalid Type, not a large tuple');
 
 		return $this->readTuple($this->read4());
@@ -241,12 +241,12 @@ class Bert_Decode
 				for ($i=0; $i<$arity - 1; $i++)
 					$tuple []= $this->readAnyRaw();
 
-				return new Bert_Tuple($tuple);
+				return new Tuple($tuple);
 			}
 		}
 		else
 		{
-			return new Bert_Tuple();
+			return new Tuple();
 		}
 	}
 
@@ -261,7 +261,7 @@ class Bert_Decode
 		elseif ($val == Bert::a('false'))
 			return false;
 		elseif ($val == Bert::a('time'))
-			return new Bert_Time($this->readAnyRaw(), $this->readAnyRaw(), $this->readAnyRaw());
+			return new Time($this->readAnyRaw(), $this->readAnyRaw(), $this->readAnyRaw());
 		elseif ($val == Bert::a('regex'))
 		{
 			$source = $this->readAnyRaw();
@@ -271,7 +271,7 @@ class Bert_Decode
 			foreach ($opts as $name)
 				$options []= "$name";
 
-			return new Bert_Regex($source, $options);
+			return new Regex($source, $options);
 		}
 		elseif ($val == Bert::a('dict'))
 			return $this->readDict();
@@ -282,10 +282,10 @@ class Bert_Decode
 	public function readDict()
 	{
 		$type = $this->read1();
-		if (!in_array($type, array(Bert_Types::LISTTYPE, Bert_Types::NIL)))
+		if (!in_array($type, array(Types::LISTTYPE, Types::NIL)))
 			$this->_fail('Invalid dict spec, not an erlang list');
 
-		if ($type === Bert_Types::LISTTYPE)
+		if ($type === Types::LISTTYPE)
 			$length = $this->read4();
 		else
 			$length = 0;
@@ -297,7 +297,7 @@ class Bert_Decode
 			$arr[$pair[0]] = $pair[1];
 		}
 
-		if ($type === Bert_Types::LISTTYPE)
+		if ($type === Types::LISTTYPE)
 			$this->read1();
 
 		return $arr;
@@ -305,7 +305,7 @@ class Bert_Decode
 
 	public function readNil()
 	{
-		if ($this->read1() !== Bert_Types::NIL)
+		if ($this->read1() !== Types::NIL)
 			$this->_fail('Invalid Type, not a nil list');
 
 		return array();
@@ -313,7 +313,7 @@ class Bert_Decode
 
 	public function readErlString()
 	{
-		if ($this->read1() !== Bert_Types::STRING)
+		if ($this->read1() !== Types::STRING)
 			$this->_fail('Invalid Type, not an erlang string');
 
 		$length = $this->read2();
@@ -322,7 +322,7 @@ class Bert_Decode
 
 	public function readList()
 	{
-		if ($this->read1() !== Bert_Types::LISTTYPE)
+		if ($this->read1() !== Types::LISTTYPE)
 			$this->_fail('Invalid Type, not an erlang list');
 
 		$length = $this->read4();
@@ -337,7 +337,7 @@ class Bert_Decode
 
 	public function readBin()
 	{
-		if ($this->read1() !== Bert_Types::BIN)
+		if ($this->read1() !== Types::BIN)
 			$this->_fail('Invalid Type, not an erlang binary');
 
 		$length = $this->read4();

@@ -1,7 +1,7 @@
 <?php
 namespace Bert\Bert;
 
-class Bert_Tuple implements \ArrayAccess, \IteratorAggregate, \Countable
+class Tuple implements \ArrayAccess, \IteratorAggregate, \Countable
 {
 	private $_data = array();
 

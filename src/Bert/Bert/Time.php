@@ -1,7 +1,7 @@
 <?php
 namespace Bert\Bert;
 
-class Bert_Time
+class Time
 {
 	public $megaseconds;
 	public $seconds;
