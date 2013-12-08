@@ -1,7 +1,8 @@
 [![Build Status](https://travis-ci.org/TriKaspar/bert-php.png?branch=master)](https://travis-ci.org/TriKaspar/bert-php)[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/TriKaspar/bert-php/badges/quality-score.png?s=1959fe255ad985188e9a7535c18167a455eadc0e)](https://scrutinizer-ci.com/g/TriKaspar/bert-php/)
 
-##Note - Work in progress
-Kaspar: This is a fork of https://github.com/dhotson/bert-php I am trying to make it composer compatible and eleminate the fdopen dependency.  
+##Note - Work in progress  
+This is a fork of https://github.com/dhotson/bert-php  
+I made it composer compatible and eleminated the fdopen dependency.  
 
 
 BERT
@@ -25,13 +26,6 @@ To designate tuples, use the Bert::t() helper or the Bert_Tuple class:
 These will both be converted to (in Erlang syntax):
 
     {foo, [1, 2, 3]}
-
-Requirements
------
-
-You will need to install the fdopen-php extension:
-http://github.com/dhotson/fdopen-php
-
 
 Usage
 -----
